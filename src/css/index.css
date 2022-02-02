@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+    .i-navbar {
+        @apply flex flex-row justify-between text-center py-3 bg-black;
+    }
+    .i-button-navbar {
+        @apply p-3 self-center text-red-600 border-2 border-b-red-700 border-black;
+    }
+    .i-button-navbar:hover {
+        @apply bg-white/[.15] border-red-700 rounded-md text-red-600 ;
+    }
+}
+
+*{
+    font-family: 'Readex Pro', sans-serif;
+    font-size: 1.02rem;
+}

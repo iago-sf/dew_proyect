@@ -2,8 +2,6 @@
   <h1>Acerca de</h1>
 </template>
 
-<script>
-export default {
-  name: "About",
-};
+<script setup>
+const name = 'about'
 </script>
