@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Readex+Pro&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer components{
+@layer components {
     .i-navbar {
         @apply flex flex-row justify-between text-center py-3 bg-black;
     }
@@ -12,11 +12,17 @@
         @apply p-3 self-center text-red-600 border-2 border-b-red-700 border-black;
     }
     .i-button-navbar:hover {
-        @apply bg-white/[.15] border-red-700 rounded-md text-red-600 ;
+        @apply bg-white/[.07] rounded-t-md scale-[1.15];
+    }
+    .i-login\/register-box {
+        @apply text-center border-2 border-red-600 rounded-md text-red-600  2xl:w-1/4 sm:w-11/12 lg:w-1/2 justify-self-center p-16 m-auto my-[10%];
+    }
+    .i-login\/register-input {
+        @apply bg-gray-200 border rounded text-xs font-medium leading-none text-red-600 py-3 w-full pl-3 mt-2 focus:scale-105;
     }
 }
 
-*{
-    font-family: 'Readex Pro', sans-serif;
+* {
+    font-family: "Readex Pro", sans-serif;
     font-size: 1.02rem;
 }
