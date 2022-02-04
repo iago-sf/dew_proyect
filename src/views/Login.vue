@@ -22,6 +22,7 @@
             </p>
             <hr class="w-full bg-gray-400" />
         </div>
+        <form @submit.prevent="login()">
         <div>
             <label id="email" class="text-sm font-medium leading-none text-red-600">
                 Email
@@ -41,28 +42,60 @@
                 </div>
             </div>
         </div>
+        <div v-if="error == 'not-found'" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
+            <label for="pass" class="text-sm font-medium leading-none text-red-600">
+                This email could not be found.
+            </label>
+        </div>
+        <div v-if="error == 'wrong-credentials'" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
+            <label for="pass" class="text-sm font-medium leading-none text-red-600">
+                Incorrect password.
+            </label>
+        </div>
+        <div v-if="error == 'unexpected'" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
+            <label for="pass" class="text-sm font-medium leading-none text-red-600">
+                An unexpected error has ocurred, try again.
+            </label>
+        </div>
         <div class="mt-8">
-            <button @click="login" role="button" class="focus:ring-2 focus:ring-offset-2 focus:ring-red-600 text-sm font-semibold leading-none text-white focus:outline-none bg-red-600 border rounded hover:bg-red-700 py-4 w-full">
+            <button role="button" class="focus:ring-2 focus:ring-offset-2 focus:ring-red-600 text-sm font-semibold leading-none text-white focus:outline-none bg-red-600 border rounded hover:bg-red-700 py-4 w-full">
                 Login
             </button>
         </div>
+        </form>
     </div>
 </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
-const name = "login";
-const db_url = 'http://localhost:3001';
+const router = useRouter();
+
+const error = ref(null);
 const data = ref({
     email: "",
     password: ""
 });
 
-function login() {
-    axios.post('http://localhost:3001/user/login', data)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+async function login() {
+    const { data } = await axios.post('http://localhost:3001/user/login', this.data);
+
+    if(data.error) {
+        if(data.type == 'not-found'){
+            this.error = 'not-found';
+        
+        } else if(data.type == 'wrong-credentials') {
+            this.error = 'wrong-credentials';
+
+        } else {
+            this.error = 'unexpected';
+        }
+
+    } else {
+       router.push('/');
+    }
 }
 </script>
