@@ -6,10 +6,9 @@ import VueAxios from 'vue-axios';
 import './css/index.css';
 
 import firebaseConfig from '../firebase/auth';
-import firebase from 'firebase/compat/app';
-import { getAuth } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 createApp(App)
     .use(router)

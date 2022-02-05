@@ -10,7 +10,8 @@
                 Sign in here
             </router-link>
         </p>
-        <button aria-label="Continue with google" role="button" class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-200 py-3.5 px-4 border rounded-lg border-gray-200 flex items-center w-full mt-10">
+        <button @click="registerWithGoogle()" aria-label="Continue with google" role="button" class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-200 py-3.5 px-4 border rounded-lg border-gray-200 flex items-center w-full mt-10">
+            <i class="bi bi-google text-gray-200"></i>
             <p class="text-base font-medium ml-4 text-gray-200">
                 Continue with Google
             </p>
@@ -48,14 +49,9 @@
                 </div>
             </div>
         </div>
-        <div v-if="error == 'duplicated'" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
+        <div v-if="error" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
             <label for="pass" class="text-sm font-medium leading-none text-red-600">
-                This email is already registered.
-            </label>
-        </div>
-        <div v-if="error == 'unexpected'" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
-            <label for="pass" class="text-sm font-medium leading-none text-red-600">
-                An unexpected error has ocurred, try again.
+                {{ error }}
             </label>
         </div>
         <div class="mt-8">
@@ -70,9 +66,9 @@
  
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import axios from 'axios';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const router = useRouter();
 
@@ -81,31 +77,67 @@ const username = ref('');
 const email = ref('');
 const password = ref('');
 
-async function register() {
-    /* const { data } = await axios.post('http://localhost:3001/user/manage', this.data);
-   
-    if(data.error) {
-        if(data.type == 'duplicated'){
-            this.error = 'duplicated';
-        
-        } else {
-            this.error = 'unexpected';
-        }
-
-    } else {
-       router.push('/login');
-    } */
-
+const register = async () => {
     // Firebase auth
-    const auth = getAuth();
-    const user = await createUserWithEmailAndPassword(auth, this.email.value, this.password.value)
-        .then(() => {
-            console.log('registrado')
+    const user = await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+        .catch( err => {
+            switch(err.code){
+                case 'auth/email-already-in-use':
+                    error.value = 'This email is already registered';
+                    break;
+                default:
+                    error.value = 'An unexpected error has ocurred, try again';
+                    break;
+            }
+        })
+    
+    if (user){
+        const { data } = await axios.post('http://localhost:3001/user/manage', { username: username.value, email: email.value});
+
+        if(data.error) {
+            switch (data.type) {
+                case 'duplicated':
+                    error.value = 'This email is already registered';
+                    break;
+                default:
+                    error.value = 'An unexpected error has ocurred, try again';
+                    break;
+            }
+
+        } else {
+            router.push('/login');
+        }
+    }
+}
+
+const registerWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(getAuth(), provider)
+        .then( result => {
+            const user = result.user;
+
+            axios.post('http://localhost:3001/user/manage', { username: user.displayName, email: user.email})
+                .then(data => {
+                    if(data.error) {
+                        switch (data.type) {
+                            case 'duplicated':
+                                error.value = 'This email is already registered';
+                                break;
+                            default:
+                                error.value = 'An unexpected error has ocurred, try again';
+                                break;
+                        }
+
+                    } else {
+                        router.push('/login');
+                    }
+                })
+                .catch(err => {
+                    // console.log(err);
+                });
         })
         .catch( err => {
-            console.log( err );
-        })
-
-    console.log( user );
+            // console.log(err);
+        });
 }
 </script>
