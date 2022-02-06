@@ -4,8 +4,8 @@
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/">Home</router-link>
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/about">Acerca de</router-link>
         </div>
-        <div v-if="sesion" class="flex flex-row basis-1/4 justify-end">
-            <router-link class="basis-1/3 i-button-navbar mx-3" to="/logout">Logout</router-link>
+        <div v-if="isLoggedIn" class="flex flex-row basis-1/4 justify-end">
+            <button @click="handleSignOut" class="basis-1/3 i-button-navbar mx-3">Logout</button>
         </div>
         <div v-else class="flex flex-row basis-1/4 justify-end">
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/login">Login</router-link>
@@ -15,6 +15,32 @@
 </template>
  
 <script setup>
+import { onMounted, ref } from 'vue';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { useRouter } from 'vue-router';
+
+const isLoggedIn = ref(false);
+const router = useRouter();
+
+let auth;
+onMounted(() => {
+    auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if(user) {
+            isLoggedIn.value = true;
+        } else {
+            isLoggedIn.value = false;
+        }
+
+    });
+});
+
+const handleSignOut = () => {
+    signOut(auth)
+        .then(() => {
+            router.push('/')
+        });
+}
 
 </script>
  
