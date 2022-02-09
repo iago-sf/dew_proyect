@@ -4,12 +4,14 @@ import Home from "../views/Home.vue";
 import About from "../views/About.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Portfolios from '../views/Portfolios.vue';
 
 const routes = [
     { path: "/", component: Home },
     { path: "/about", component: About, meta: { requiresAuth: true } },
     { path: "/login", component: Login },
     { path: "/register", component: Register },
+    { path: "/portfolios", component: Portfolios },
 ];
 
 const history = createWebHistory();

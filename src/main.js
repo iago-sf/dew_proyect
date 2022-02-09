@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router/router.js';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import { createPinia } from 'pinia'
 import './css/index.css';
 
 import firebaseConfig from '../firebase/auth';
@@ -13,5 +14,6 @@ initializeApp(firebaseConfig);
 createApp(App)
     .use(router)
     .use(VueAxios, axios)
+    .use(createPinia())
     .mount('#app');
 
