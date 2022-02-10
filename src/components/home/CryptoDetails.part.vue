@@ -16,7 +16,7 @@
 </template>
  
 <script setup>
-import { storeLog } from '../store/storeLog';
+import { storeLog } from '../../store/storeLog';
 
 const session = storeLog();
 

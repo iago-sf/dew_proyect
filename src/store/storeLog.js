@@ -5,7 +5,7 @@ export const storeLog = defineStore('session', () => {
     const isLogged = ref(false);
     
     const getLog = () => isLogged.value;
-    const setLog = (logStatus) => {
+    const setLog = logStatus => {
         isLogged.value = logStatus;
     }
 

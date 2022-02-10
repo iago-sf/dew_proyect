@@ -22,7 +22,7 @@
 import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
-import { storeLog } from '../store/storeLog';
+import { storeLog } from '../../store/storeLog';
 
 const session = storeLog();
 const router = useRouter();
