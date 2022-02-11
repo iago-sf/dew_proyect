@@ -2,7 +2,7 @@
     <nav class="i-navbar">
         <div class="flex flex-row basis-1/4">
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/">Home</router-link>
-            <router-link class="basis-1/3 i-button-navbar mx-3" to="/about">Acerca de</router-link>
+            <router-link class="basis-1/3 i-button-navbar mx-3" to="/portfolios">Portfolios</router-link>
         </div>
         <div v-if="session.getLog()" class="flex flex-row basis-1/4 justify-end">
             <button @click="handlePortfolio">

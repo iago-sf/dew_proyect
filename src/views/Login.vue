@@ -103,8 +103,6 @@ const singInWithGoogle = async () => {
             mail.setEmail(result.user.email);
             router.push('/');
         })
-        .catch( err => {
-            // console.log(err);
-        });
+        .catch( err => console.log(err));
 }
 </script>

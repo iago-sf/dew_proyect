@@ -11,7 +11,7 @@ const routes = [
     { path: "/about", component: About, meta: { requiresAuth: true } },
     { path: "/login", component: Login },
     { path: "/register", component: Register },
-    { path: "/portfolios", component: Portfolios },
+    { path: "/portfolios", component: Portfolios, meta: { requiresAuth: true } },
 ];
 
 const history = createWebHistory();
@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next)=>{
             next();
         
         } else {
-            next('/');
+            next('/login');
         }
       
     } else {

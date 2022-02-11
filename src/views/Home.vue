@@ -34,6 +34,7 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { storeLog } from '../store/storeLog';
+import { storeApiUrl } from '../store/storeApiUrl';
 
 import Navbar from '../components/parts/Navbar.part.vue';
 import Footer from '../components/parts/Footer.part.vue';
@@ -46,6 +47,8 @@ let cryptoId = ref("");
 let cryptoName = ref("");
 
 const session = storeLog();
+const ApiUrl = storeApiUrl();
+const url = ApiUrl.getUrl();
 
 onMounted(async () => {
     const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
@@ -66,7 +69,7 @@ const handlePortfolio = () => {
 };
 
 const handleAddToPortfolio = e => {
-    cryptoId.value = `http://localhost:3001/addCrypto/${e.cryptoId}`;
+    cryptoId.value = `${url}/addCrypto/${e.cryptoId}`;
     cryptoName.value = e.cryptoName;
     toggle('AddToPortfolio');
 };

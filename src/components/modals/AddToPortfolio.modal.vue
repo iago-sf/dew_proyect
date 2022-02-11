@@ -25,7 +25,10 @@
 </template>
  
 <script setup>
-import { ref } from 'vue';
+import axios from 'axios';
+import { onUpdated, ref } from 'vue';
+import { storeApiUrl } from '../../store/storeApiUrl';
+import { storeEmail } from '../../store/storeEmail';
 
 const portfolio = ref();
 
@@ -44,6 +47,17 @@ const emit = defineEmits(['toggle']);
 const modalToggle = () => {
     emit('toggle');
 };
+
+const mail = storeEmail();
+const url = storeApiUrl();
+
+onUpdated(async ()=> {
+    const { data: user } = await axios.post(`${url.getUrl()}/user/login`, { email: mail.getEmail()})
+        .catch(err => console.log(err));
+    
+    const res = await axios.get(`${url.getUrl()}/portfolio/get/${user.userId}`);
+    console.log(res);
+});
 </script>
  
 <style>

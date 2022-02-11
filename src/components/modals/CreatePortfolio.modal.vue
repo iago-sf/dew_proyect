@@ -40,6 +40,7 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { storeApiUrl } from '../../store/storeApiUrl';
 import { storeEmail } from '../../store/storeEmail';
 
 const emit = defineEmits(['toggle']);
@@ -52,22 +53,21 @@ let description = ref("");
 let error = ref();
 
 const mail = storeEmail();
+const ApiUrl = storeApiUrl();
+const url = ApiUrl.getUrl();
 
 const createPortfolio = async () => {
-    console.log(mail.getEmail());
-    const { data: user} = await axios.post('http://localhost:3001/user/login', { email: mail.getEmail()})
+    const { data: user } = await axios.post(`${url}/user/login`, { email: mail.getEmail()})
         .catch(err => console.log(err));
-    console.log(user);
-    const res = await axios.post('http://localhost:3001/portfolio', {
-        name: name.value,
-        description: description.value,
-        ownerId: user.userId,
-    })
-    .catch(err => {
-        console.log(err);
-    });
+    
+    const res = await axios.post(`${url}/portfolio`, {
+            name: name.value,
+            description: description.value,
+            ownerId: user.userId,
+        })
+        .catch(err => console.log(err));
 
-    console.log(res);
+    emit('toggle');
 };
 
 </script>
