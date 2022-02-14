@@ -67,7 +67,14 @@ const createPortfolio = async () => {
         })
         .catch(err => console.log(err));
 
-    emit('toggle');
+    if(res.data.error) {
+        error.value = res.data.message;
+    } else { 
+        name.value = "";
+        description.value = "";
+        
+        emit('toggle');
+    }
 };
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-black text-white text-center">
+    <div class="bg-black text-white text-center min-h-screen">
         <Navbar @togglePortfolio="handlePortfolio" />
         <div class="text-center p-5">
              <h3 class=" text-3xl">

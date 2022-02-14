@@ -7,11 +7,11 @@
                 </div>
                 <div class="mt-5 text-center ">
                     <select v-model="portfolio" name="portfolio" class="text-black bg-gray-200 border rounded font-medium leading-none py-2 w-full pl-3 focus:scale-105 duration-100">
-                        <option value="" disabled default>Select your prefered portfolio</option>
-                        <option value="algo" class="">algo</option>
+                        <option value="-1" disabled>Select your prefered portfolio</option>
+                        <option v-for="portfolio in portfolios" :key="portfolio.portfolioId" :value="portfolio.portfolioId" class="">{{ portfolio.name }}</option>
                     </select>
                 </div>
-                <a :href="cryptoId" class="w-full dark:text-black dark:hover:bg-gray-100 dark:bg-white sm:w-auto mt-10 text-base leading-4 text-center text-white py-6 px-16 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black bg-black hover:bg-black">Confirm</a>
+                <a :href="cryptoId+'/'+portfolio" class="w-full dark:text-black dark:hover:bg-gray-100 dark:bg-white sm:w-auto mt-10 text-base leading-4 text-center text-white py-6 px-16 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black bg-black hover:bg-black">Confirm</a>
                 <button @click="modalToggle()" class="mt-6 dark:text-white dark:hover:border-white text-base leading-none focus:outline-none hover:border-black focus:border-black border-b border-transparent text-center text-black">Cancel</button>
                 <button @click="modalToggle()" class="text-black dark:text-gray-400 absolute top-8 right-8 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black" aria-label="close">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,11 +26,12 @@
  
 <script setup>
 import axios from 'axios';
-import { onUpdated, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import { storeEmail } from '../../store/storeEmail';
 
-const portfolio = ref();
+const portfolio = ref('-1');
+const portfolios = ref();
 
 defineProps({
     cryptoName: {
@@ -51,12 +52,14 @@ const modalToggle = () => {
 const mail = storeEmail();
 const url = storeApiUrl();
 
-onUpdated(async ()=> {
+onMounted(async ()=> {
     const { data: user } = await axios.post(`${url.getUrl()}/user/login`, { email: mail.getEmail()})
         .catch(err => console.log(err));
     
-    const res = await axios.get(`${url.getUrl()}/portfolio/get/${user.userId}`);
-    console.log(res);
+    const { data } = await axios.get(`${url.getUrl()}/portfolio/get/${user.userId}`)
+        .catch(err => console.log(err));
+
+    portfolios.value = data.portfolios;
 });
 </script>
  
