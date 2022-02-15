@@ -1,6 +1,6 @@
 <template>
     <div class="bg-black text-white text-center min-h-screen">
-        <Navbar @togglePortfolio="handlePortfolio" />
+        <Navbar />
         <div class="text-center p-5">
              <h3 class=" text-3xl">
                 Track your crypto investments
@@ -25,7 +25,6 @@
 
         <Footer />
 
-        <CreatePortfolio v-if="session.getLog()" @toggle="toggle('CreatePortfolio')"/>
         <AddToPortfolio  v-if="session.getLog()" @toggle="toggle('AddToPortfolio')" :cryptoId="cryptoId" :cryptoName="cryptoName"/>
     </div>
 </template>
@@ -39,7 +38,6 @@ import { storeApiUrl } from '../store/storeApiUrl';
 import Navbar from '../components/parts/Navbar.part.vue';
 import Footer from '../components/parts/Footer.part.vue';
 import CryptoDetails from '../components/home/CryptoDetails.part.vue';
-import CreatePortfolio from '../components/modals/CreatePortfolio.modal.vue';
 import AddToPortfolio from '../components/modals/AddToPortfolio.modal.vue';
 
 let search = ref("");
@@ -47,9 +45,7 @@ let cryptoId = ref("");
 let cryptoName = ref("");
 
 const session = storeLog();
-const ApiUrl = storeApiUrl();
-const url = ApiUrl.getUrl();
-
+const url = storeApiUrl();
 onMounted(async () => {
     const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
         .catch(err => {
@@ -64,12 +60,8 @@ window.addEventListener('resize', () => {
     width.value = window.innerWidth;
 });
 
-const handlePortfolio = () => {
-    toggle('CreatePortfolio');
-};
-
 const handleAddToPortfolio = e => {
-    cryptoId.value = `${url}/addCrypto/${e.cryptoId}`;
+    cryptoId.value = `${url.getUrl()}/addCrypto/${e.cryptoId}`;
     cryptoName.value = e.cryptoName;
     toggle('AddToPortfolio');
 };

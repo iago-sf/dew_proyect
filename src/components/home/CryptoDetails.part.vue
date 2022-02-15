@@ -10,7 +10,7 @@
         <div v-if="width >= 1024" class="w-[12.5%] text-center">${{ searchData.total_volume }}</div>
         <div v-if="width >= 1024" class="w-[12.5%] text-center">{{ searchData.max_supply }}</div>
         <div v-if="session.getLog()" class="lg:w-[15%] w-[17.5%] text-center">
-            <button class="" @click="handleToggle({ cryptoId: searchData.symbol, cryptoName: searchData.name })">Add to porfolio</button>
+            <button class="" @click="handleToggle({ cryptoId: searchData.id, cryptoName: searchData.name })">Add to porfolio</button>
         </div>
     </div>
 </template>

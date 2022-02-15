@@ -16,6 +16,8 @@
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/register">Register</router-link>
         </div>
     </nav>
+
+    <CreatePortfolio v-if="session.getLog()" @toggle="toggle('CreatePortfolio')"/>
 </template>
  
 <script setup>
@@ -23,16 +25,21 @@ import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { storeLog } from '../../store/storeLog';
+import { storeEmail } from '../../store/storeEmail';
+import CreatePortfolio from '../modals/CreatePortfolio.modal.vue';
 
 const session = storeLog();
+const mail = storeEmail();
 const router = useRouter();
 
 let auth;
 onMounted(() => {
     auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-        if(user) {
+        if(user) { 
+            mail.setEmail(user.email);
             session.setLog(true);
+            
         } else {
             session.setLog(false);
         }
@@ -47,9 +54,12 @@ const handleSignOut = () => {
         });
 };
 
-const emit = defineEmits(['togglePortfolio']);
 const handlePortfolio = () => {
-    emit('togglePortfolio');
+    toggle('CreatePortfolio');
+};
+
+const toggle = modal => {
+    document.getElementById(modal).classList.toggle('hidden');
 };
 </script>
  
