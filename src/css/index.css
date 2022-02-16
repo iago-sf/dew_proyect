@@ -20,6 +20,9 @@
     .i-input {
         @apply bg-gray-200 border rounded text-xs font-medium leading-none text-red-600 py-3 w-full pl-3 mt-2 focus:scale-105 duration-100;
     }
+    .hidden-label {
+        @apply text-center absolute top-16 right-[6.5rem] bg-red-600 p-4 rounded-lg text-black scale-0 duration-200;
+    }
 }
 
 * {

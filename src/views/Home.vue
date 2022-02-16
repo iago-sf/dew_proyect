@@ -10,7 +10,7 @@
                 to add cryptos into your portfolios
             </span>
         </div>
-        <div class="flex flex-row border-b-2 py-5 mx-10 border-red-600 justify-center">
+        <div v-if="!loading" class="flex flex-row border-b-2 py-5 mx-10 border-red-600 justify-center">
             <div class="lg:w-[5%] w-[7.5%] text-center">Rank</div>
             <div class="lg:w-[5%] w-[7.5%] text-center">Icon</div>
             <div class="lg:w-[5%] w-[7.5%] text-center">Tag</div>
@@ -21,6 +21,12 @@
             <div v-if="width >= 1024" class="w-[12.5%] text-center">Supply</div>
             <div v-if="session.getLog()" class="lg:w-[15%] w-[17.5%] text-center"></div>
         </div>
+
+        <div v-if="loading" class="flex items-center justify-center">
+            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-red-600" role="status">
+            </div>
+        </div>
+
         <CryptoDetails v-for="elem in search" :key="elem.market_cap_rank" :width="width" :searchData="elem" @toggle="handleAddToPortfolio"/>
 
         <Footer />
@@ -47,9 +53,10 @@ const session = storeLog();
 /*
  * Properties
  */
-let search = ref("");
-let cryptoId = ref("");
-let cryptoName = ref("");
+const search = ref("");
+const cryptoId = ref("");
+const cryptoName = ref("");
+const loading = ref(false);
 
 /*
  * Functions
@@ -73,11 +80,13 @@ const toggle = modal => {
  * Hooks
  */
 onMounted(async () => {
+    loading.value = true;
     const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
         .catch(err => {
             console.log(err);
         });
 
     search.value = data;
+    loading.value = false;
 });
 </script>

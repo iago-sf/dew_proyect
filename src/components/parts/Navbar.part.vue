@@ -5,9 +5,9 @@
             <router-link class="basis-1/3 i-button-navbar mx-3" to="/portfolios">Portfolios</router-link>
         </div>
         <div v-if="session.getLog()" class="flex flex-row basis-1/4 justify-end">
-            <button @click="handlePortfolio">
+            <button @click="handlePortfolio" class="group">
                 <i class="bi bi-plus-circle-fill text-red-600 text-4xl"></i>
-                <label for="" class="hover:absolute hidden">Create new portfolio</label>
+                <label for="" class="hidden-label group-hover:scale-100">Create new portfolio</label>
             </button>
             <button @click="handleSignOut" class="basis-1/3 i-button-navbar mx-3">Logout</button>
         </div>

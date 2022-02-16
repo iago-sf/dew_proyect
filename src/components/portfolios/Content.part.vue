@@ -20,7 +20,14 @@
             </button>
         </div>
         
-        <Coins :coinsInfo="coinsInfo" @deleted="handleDeleted"/>
+        <div v-if="loading" class="flex items-center justify-center">
+            <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-red-600" role="status">
+            </div>
+        </div>
+        <Coins v-if="!loading && coinsInfo != ''" :coinsInfo="coinsInfo" @deleted="handleDeleted"/>
+        <div v-if="!loading && coinsInfo == ''" class="text-gray-600">
+            Go to <router-link to="/" class="hover:text-red-600 underline underline-offset-2">home</router-link> and add new cryptos to your portfolio
+        </div>
 
     </div>
 </template>
@@ -48,11 +55,13 @@ const pDescription = ref("");
 const coinsInfo = ref([]);
 const editing = ref(false);
 const description = ref();
+const loading = ref(false);
 
 /*
  * Functions 
  */
 const dbSearch = async id => {
+    loading.value = true;
     const { data } = await axios.get(`${url.getUrl()}/portfolio/${id}`)
         .catch(err => console.log(err));
 
@@ -71,6 +80,7 @@ const dbSearch = async id => {
     };
 
     coinsInfo.value = tempCoins.value;
+    loading.value = false;
 }
 
 const deletePortfolio = async () => {
