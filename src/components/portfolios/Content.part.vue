@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col basis-9/12">
+    <div class="flex flex-col basis-9/12 xl:basis-10/12">
         <div class="flex flex-row text-center p-5">
-            <div class="flex flex-col basis-10/12 align-middle">
+            <div class="flex flex-col basis-10/12 pl-[17.7%] align-middle">
                 <h3 class=" text-3xl">
                     {{ pName }}
                 </h3>
