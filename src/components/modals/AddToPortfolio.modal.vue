@@ -42,6 +42,16 @@ import { onMounted, ref } from 'vue';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import { storeEmail } from '../../store/storeEmail';
 
+/*
+ * Constants 
+ */
+const emit = defineEmits(['toggle']);
+const mail = storeEmail();
+const url = storeApiUrl();
+
+/*
+ * Properties 
+ */
 const portfolio = ref('-1');
 const price = ref();
 const cuantity = ref();
@@ -58,23 +68,13 @@ defineProps({
     }
 });
 
-const emit = defineEmits(['toggle']);
+/*
+ * Functions 
+ */
 const modalToggle = () => {
     modalReset();
 };
 
-const mail = storeEmail();
-const url = storeApiUrl();
-
-onMounted(async ()=> {
-    const { data: user } = await axios.post(`${url.getUrl()}/user/login`, { email: mail.getEmail()})
-        .catch(err => console.log(err));
-    
-    const { data } = await axios.get(`${url.getUrl()}/portfolio/get/${user.userId}`)
-        .catch(err => console.log(err));
-
-    portfolios.value = data.portfolios;
-});
 
 const addCrypto = async id => {
     const { data } = await axios.post(`${url.getUrl()}/addCrypto`, { 
@@ -94,7 +94,18 @@ const modalReset = ()=> {
     cuantity.value = '';
     emit('toggle');
 };
+
+/*
+ * Hooks
+ */
+onMounted(async ()=> {
+    const { data: user } = await axios.post(`${url.getUrl()}/user/login`, { email: mail.getEmail()})
+        .catch(err => console.log(err));
+    
+    const { data } = await axios.get(`${url.getUrl()}/portfolio/get/${user.userId}`)
+        .catch(err => console.log(err));
+
+    portfolios.value = data.portfolios;
+});
+
 </script>
- 
-<style>
-</style>

@@ -43,18 +43,27 @@ import { ref } from 'vue';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import { storeEmail } from '../../store/storeEmail';
 
+/*
+ * Constants
+ */
 const emit = defineEmits(['toggle']);
-const modalToggle = () => {
-    emit('toggle');
-};
+const mail = storeEmail();
+const ApiUrl = storeApiUrl();
+const url = ApiUrl.getUrl();
 
+/*
+ * Properties
+ */
 let name = ref();
 let description = ref("");
 let error = ref();
 
-const mail = storeEmail();
-const ApiUrl = storeApiUrl();
-const url = ApiUrl.getUrl();
+/*
+ * Functions
+ */
+const modalToggle = () => {
+    emit('toggle');
+};
 
 const createPortfolio = async () => {
     const { data: user } = await axios.post(`${url}/user/login`, { email: mail.getEmail()})
@@ -78,6 +87,3 @@ const createPortfolio = async () => {
 };
 
 </script>
- 
-<style>
-</style>

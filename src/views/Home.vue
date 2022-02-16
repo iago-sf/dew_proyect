@@ -33,28 +33,27 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { storeLog } from '../store/storeLog';
-import { storeApiUrl } from '../store/storeApiUrl';
 
 import Navbar from '../components/parts/Navbar.part.vue';
 import Footer from '../components/parts/Footer.part.vue';
 import CryptoDetails from '../components/home/CryptoDetails.part.vue';
 import AddToPortfolio from '../components/modals/AddToPortfolio.modal.vue';
 
+/*
+ * Constants
+ */
+const session = storeLog();
+
+/*
+ * Properties
+ */
 let search = ref("");
 let cryptoId = ref("");
 let cryptoName = ref("");
 
-const session = storeLog();
-const url = storeApiUrl();
-onMounted(async () => {
-    const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
-        .catch(err => {
-            console.log(err);
-        });
-
-    search.value = data;
-});
-
+/*
+ * Functions
+ */
 let width = ref(window.innerWidth);
 window.addEventListener('resize', () => {
     width.value = window.innerWidth;
@@ -70,4 +69,15 @@ const toggle = modal => {
     document.getElementById(modal).classList.toggle('hidden');
 };
 
+/*
+ * Hooks
+ */
+onMounted(async () => {
+    const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`)
+        .catch(err => {
+            console.log(err);
+        });
+
+    search.value = data;
+});
 </script>

@@ -28,25 +28,21 @@ import { storeLog } from '../../store/storeLog';
 import { storeEmail } from '../../store/storeEmail';
 import CreatePortfolio from '../modals/CreatePortfolio.modal.vue';
 
+/*
+ * Constants
+ */
 const session = storeLog();
 const mail = storeEmail();
 const router = useRouter();
 
+/*
+ * Properties
+ */
 let auth;
-onMounted(() => {
-    auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if(user) { 
-            mail.setEmail(user.email);
-            session.setLog(true);
-            
-        } else {
-            session.setLog(false);
-        }
 
-    });
-});
-
+/*
+ * Functions
+ */
 const handleSignOut = () => {
     signOut(auth)
         .then(() => {
@@ -61,7 +57,22 @@ const handlePortfolio = () => {
 const toggle = modal => {
     document.getElementById(modal).classList.toggle('hidden');
 };
+
+/*
+ * Hooks
+ */
+onMounted(() => {
+    auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if(user) { 
+            mail.setEmail(user.email);
+            session.setLog(true);
+            
+        } else {
+            session.setLog(false);
+        }
+
+    });
+});
+
 </script>
- 
-<style>
-</style>

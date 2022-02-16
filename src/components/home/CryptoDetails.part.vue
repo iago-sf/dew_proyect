@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row border-b-2 border-gray-600 py-5 mx-10 justify-center">
+    <div class="flex flex-row border-b-2 border-gray-600 py-5 mx-10 justify-center items-center">
         <div class="lg:w-[5%] w-[7.5%] text-center">{{ searchData.market_cap_rank }}</div>
         <div class="lg:w-[5%] w-[7.5%] text-center"><img class="m-auto" width="32" :src="searchData.image" /></div>
         <div class="lg:w-[5%] w-[7.5%] text-center">{{ searchData.symbol.toUpperCase() }}</div>
@@ -36,6 +36,3 @@ const handleToggle = (id) => {
 };
 
 </script>
- 
-<style>
-</style>

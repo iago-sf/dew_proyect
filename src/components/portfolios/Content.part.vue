@@ -14,7 +14,7 @@
             </button>
         </div>
         
-        <Coins :coinsInfo="coinsInfo" />
+        <Coins :coinsInfo="coinsInfo" @deleted="handleDeleted"/>
 
     </div>
 </template>
@@ -26,14 +26,23 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import Coins from './Coins.part.vue';
 
+/*
+ * Constants 
+ */
 const route = useRoute();
 const router = useRouter();
-const pName = ref("");
-const pDescription = ref("");
-let coinsInfo = ref([]);
-
 const url = storeApiUrl();
 
+/*
+ * Properties 
+ */
+const pName = ref("");
+const pDescription = ref("");
+const coinsInfo = ref([]);
+
+/*
+ * Functions 
+ */
 const dbSearch = async id => {
     const { data } = await axios.get(`${url.getUrl()}/portfolio/${id}`)
         .catch(err => console.log(err));
@@ -55,6 +64,20 @@ const dbSearch = async id => {
     coinsInfo.value = tempCoins.value;
 }
 
+const deletePortfolio = async () => {
+    const { data } = await axios.delete(`${url.getUrl()}/portfolio/${route.params.id}`)
+        .catch(err => console.log(err));
+    
+    router.push('/portfolios');
+};
+
+const handleDeleted = () => {
+    dbSearch(route.params.id);
+};
+
+/*
+ * Hooks 
+ */
 onMounted(async () => {
     await dbSearch(route.params.id);
 });
@@ -64,15 +87,4 @@ onBeforeRouteUpdate(async (to, from) => {
         await dbSearch(to.params.id);
     }
 });
-
-const deletePortfolio = async () => {
-    const { data } = await axios.delete(`${url.getUrl()}/portfolio/${route.params.id}`)
-        .catch(err => console.log(err));
-    
-    router.push('/portfolios');
-};
-
 </script>
- 
-<style>
-</style>

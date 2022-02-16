@@ -64,14 +64,22 @@ import { useRouter } from 'vue-router';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { storeEmail } from '../store/storeEmail';
 
+/*
+ * Constants
+ */
 const router = useRouter();
+const mail = storeEmail();
 
+/*
+ * Properties
+ */
 const error = ref(null);
 const email = ref("");
 const password = ref("");
 
-const mail = storeEmail();
-
+/*
+ * Functions
+ */
 const login = () => {
     signInWithEmailAndPassword(getAuth(), email.value, password.value)
         .then( result => {

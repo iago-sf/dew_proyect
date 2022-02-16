@@ -71,15 +71,24 @@ import axios from 'axios';
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { storeApiUrl } from '../store/storeApiUrl';
 
+/*
+ * Constants
+ */
 const router = useRouter();
 const ApiUrl = storeApiUrl();
 const url = ApiUrl.getUrl();
 
+/*
+ * Properties
+ */
 const error = ref(null);
 const username = ref('');
 const email = ref('');
 const password = ref('');
 
+/*
+ * Functions
+ */
 const register = async () => {
     // Firebase auth
     const user = await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
@@ -111,7 +120,7 @@ const register = async () => {
             router.push('/login');
         }
     }
-}
+};
 
 const registerWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -136,5 +145,5 @@ const registerWithGoogle = async () => {
             router.push('/login');
         }
     }
-}
+};
 </script>

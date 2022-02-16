@@ -16,14 +16,22 @@
 <script setup>
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import { storeEmail } from '../../store/storeEmail';
 
+/*
+ * Constants 
+ */
 const portfolios = ref();
 const mail = storeEmail();
 const url = storeApiUrl();
+const route = useRoute();
 
-onMounted(async ()=> {
+/*
+ * Functions 
+ */
+const search = async () => {
     const { data: user } = await axios.post(`${url.getUrl()}/user/login`, { email: mail.getEmail()})
         .catch(err => console.log(err));
 
@@ -31,9 +39,19 @@ onMounted(async ()=> {
         .catch(err => console.log(err));
 
     portfolios.value = data.portfolios;
+};
+
+/*
+ * Hooks 
+ */
+onMounted(async ()=> {
+    await search();
+});
+
+onBeforeRouteUpdate(async (to, from) => {
+    if(!to.params.id){
+        await search();
+    }
 });
 
 </script>
- 
-<style>
-</style>
