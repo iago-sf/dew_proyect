@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col basis-9/12">
         <div class="flex flex-row text-center p-5">
-            <div class="flex flex-col basis-10/12">
+            <div class="flex flex-col basis-10/12 align-middle">
                 <h3 class=" text-3xl">
                     {{ pName }}
                 </h3>
@@ -9,11 +9,10 @@
                     {{ pDescription }}
                 </span>
             </div>
-            <div class="flex flex-col basis-2/12">
-                
-            </div>
+            <button @click="deletePortfolio" class="flex flex-col basis-2/12 h-fit hover:scale-100 text-center mt-3">
+                <i class="bi bi-trash text-red-600 text-4xl m-auto"></i>
+            </button>
         </div>
-        
         
         <Coins :coinsInfo="coinsInfo" />
 
@@ -23,11 +22,12 @@
 <script setup>
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import { storeApiUrl } from '../../store/storeApiUrl';
 import Coins from './Coins.part.vue';
 
-const router = useRoute();
+const route = useRoute();
+const router = useRouter();
 const pName = ref("");
 const pDescription = ref("");
 let coinsInfo = ref([]);
@@ -56,7 +56,7 @@ const dbSearch = async id => {
 }
 
 onMounted(async () => {
-    await dbSearch(router.params.id);
+    await dbSearch(route.params.id);
 });
 
 onBeforeRouteUpdate(async (to, from) => { 
@@ -65,6 +65,12 @@ onBeforeRouteUpdate(async (to, from) => {
     }
 });
 
+const deletePortfolio = async () => {
+    const { data } = await axios.delete(`${url.getUrl()}/portfolio/${route.params.id}`)
+        .catch(err => console.log(err));
+    
+    router.push('/portfolios');
+};
 
 </script>
  
