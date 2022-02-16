@@ -61,7 +61,7 @@ window.addEventListener('resize', () => {
 });
 
 const handleAddToPortfolio = e => {
-    cryptoId.value = `${url.getUrl()}/addCrypto/${e.cryptoId}`;
+    cryptoId.value = e.cryptoId;
     cryptoName.value = e.cryptoName;
     toggle('AddToPortfolio');
 };
