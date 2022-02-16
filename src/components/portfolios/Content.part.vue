@@ -1,16 +1,22 @@
 <template>
     <div class="flex flex-col basis-9/12 xl:basis-10/12">
         <div class="flex flex-row text-center p-5">
-            <div class="flex flex-col basis-10/12 pl-[17.7%] align-middle">
+            <div class="flex flex-col basis-10/12 pl-[17.7%] align-middle xl:max-w-screen-xl lg:max-w-screen-lg md:max-w-screen-md sm:max-w-screen-sm max-w-s">
                 <h3 class=" text-3xl">
                     {{ pName }}
                 </h3>
-                <span v-if="pDescription != ''" class="text-gray-600">
+                <span v-if="pDescription != '' && !editing" class="text-gray-600 break-words">
                     {{ pDescription }}
                 </span>
+                <div v-if="editing" class="mt-6 w-full mb-2">
+                    <input aria-labelledby="description" type="text" class="i-input" v-model.trim="description" :placeholder="pDescription" @focusout="updateDesc" maxlength="255"/>
+                </div> 
             </div>
-            <button @click="deletePortfolio" class="flex flex-col basis-2/12 h-fit hover:scale-100 text-center mt-3">
-                <i class="bi bi-trash text-red-600 text-4xl m-auto"></i>
+            <button @click="editPortfolio" class="flex flex-col basis-1/12 h-fit w-fit hover:scale-100 text-center mt-3 place-items-end">
+                <i class="bi bi-pencil text-red-600 text-3xl"></i>
+            </button>
+            <button @click="deletePortfolio" class="flex flex-col basis-1/12 h-fit w-fit hover:scale-100 text-center mt-3">
+                <i class="bi bi-trash text-red-600 text-3xl m-auto"></i>
             </button>
         </div>
         
@@ -21,9 +27,10 @@
  
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import { storeApiUrl } from '../../store/storeApiUrl';
+
 import Coins from './Coins.part.vue';
 
 /*
@@ -39,6 +46,8 @@ const url = storeApiUrl();
 const pName = ref("");
 const pDescription = ref("");
 const coinsInfo = ref([]);
+const editing = ref(false);
+const description = ref();
 
 /*
  * Functions 
@@ -71,8 +80,27 @@ const deletePortfolio = async () => {
     router.push('/portfolios');
 };
 
+const editPortfolio = async () => {
+    if(editing.value){
+        editing.value = false;
+    } else {
+        editing.value = true;
+    }
+};
+
 const handleDeleted = () => {
     dbSearch(route.params.id);
+};
+
+const updateDesc = async () => {
+    if(pDescription.value != description.value){
+        const { data } = await axios.put(`${url.getUrl()}/portfolio/${route.params.id}`, { description: description.value })
+            .catch(err => console.log(err));
+
+        await dbSearch(route.params.id);
+    }
+
+    editing.value = false;
 };
 
 /*
