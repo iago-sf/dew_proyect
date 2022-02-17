@@ -15,13 +15,13 @@
                     <label id="price" class="text-sm font-medium leading-none text-red-600">
                         Buying price
                     </label>
-                    <input aria-labelledby="price" type="number" class="i-input" placeholder="2.54" v-model.trim="price"/>
+                    <input aria-labelledby="price" type="number" class="i-input" placeholder="2.54" v-model.trim="price" maxlength="17"/>
                 </div>
                 <div class="mt-5 w-[50%]">
                     <label id="cuantity" class="text-sm font-medium leading-none text-red-600">
                         Cuantity
                     </label>
-                    <input aria-labelledby="cuantity" type="number" class="i-input" placeholder="20.6" v-model.trim="cuantity"/>
+                    <input aria-labelledby="cuantity" type="number" class="i-input" placeholder="20.6" v-model.trim="cuantity" maxlength="17"/>
                 </div>
                 <button @click="addCrypto(cryptoId)" class="mt-5 focus:ring-2 focus:ring-offset-2 focus:ring-red-600 text-sm font-semibold leading-none text-white focus:outline-none bg-red-600 border rounded hover:bg-red-700 py-4 w-[50%]">Confirm</button>
                 <button @click="modalToggle()" class="mt-6 dark:text-white dark:hover:border-white text-base leading-none focus:outline-none hover:border-black focus:border-black border-b border-transparent text-center text-black">Cancel</button>

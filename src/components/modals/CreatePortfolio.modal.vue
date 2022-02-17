@@ -7,13 +7,13 @@
                         <label id="name" class="text-sm font-medium leading-none text-red-600">
                             Portfolio name
                         </label>
-                        <input aria-labelledby="name" type="text" class="i-input" v-model.trim="name"/>
+                        <input aria-labelledby="name" type="text" class="i-input" v-model.trim="name" maxlength="20"/>
                     </div>
                     <div class="mt-6 w-full">
                         <label id="description" class="text-sm font-medium leading-none text-red-600">
                             Description
                         </label>
-                        <input aria-labelledby="description" type="text" class="i-input" v-model.trim="description" placeholder="Optional"/>
+                        <input aria-labelledby="description" type="text" class="i-input" v-model.trim="description" placeholder="Optional" maxlength="255" />
                     </div>
                     <div v-if="error" class="mt-6 w-full border-2 border-red-600 rounded p-2 bg-red-600/20">
                         <label for="pass" class="text-sm font-medium leading-none text-red-600">
