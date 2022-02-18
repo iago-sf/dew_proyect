@@ -7,7 +7,7 @@
         <div class="lg:w-[12.5%] w-[15%] text-center">${{ searchData.current_price }}</div>
         <div v-if="searchData.price_change_24h > 0" class="lg:w-[12.5%] w-[15%] text-center text-green-600">${{ searchData.price_change_24h.toFixed(2) }}</div>
         <div v-else class="lg:w-[12.5%] w-[15%] text-center text-red-600"  >${{ searchData.price_change_24h.toFixed(2) }}</div>
-        <div v-if="width >= 1024" class="w-[12.5%] text-center">${{ searchData.total_volume }}</div>
+        <div v-if="width >= 1024" class="w-[12.5%] text-center">${{ searchData.market_cap }}</div>
         <div v-if="width >= 1024" class="w-[12.5%] text-center">{{ searchData.max_supply }}</div>
         <div v-if="session.getLog()" class="lg:w-[15%] w-[17.5%] text-center">
             <button class="" @click="handleToggle({ cryptoId: searchData.id, cryptoName: searchData.name })">Add to porfolio</button>

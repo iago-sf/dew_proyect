@@ -14,7 +14,7 @@
         <div v-if="profit(coin) >= 0" class="flex flex-col basis-[20%] text-green-600">${{ profit(coin).toFixed(2) }}</div>
         <div v-else class="flex flex-col basis-[20%] text-red-600">{{ profit(coin).toFixed(2) }}</div>
         <div class="flex flex-col basis-[20%]">{{ coin.dbInfo.cuantity }}</div>
-        <div class="flex flex-col basis-[20%]">${{ (coin.tickers[0].last * coin.dbInfo.cuantity).toFixed(2) }}</div>
+        <div class="flex flex-col basis-[20%]">${{ (coin.tickers[target(coin)].last * coin.dbInfo.cuantity).toFixed(2) }}</div>
         <div class="flex flex-col basis-[10%]"><button @click="deleteCrypto(coin.dbInfo.id)"><i class="bi bi-trash text-red-600 text-2xl m-auto"></i></button></div>
     </div>
 </template>
@@ -44,11 +44,26 @@ defineProps({
 /*
  * Functions 
  */
-const profit = coin => (coin.tickers[0].last * coin.dbInfo.cuantity) - (coin.dbInfo.addedPrice * coin.dbInfo.cuantity);
+const profit = coin => {
+    return (coin.tickers[target(coin)].last * coin.dbInfo.cuantity) - (coin.dbInfo.addedPrice * coin.dbInfo.cuantity)
+};
+
 const deleteCrypto = async id => {
     const { data } = await axios.delete(`${url.getUrl()}/addCrypto/${id}`)
         .catch(err => console.log(err));
 
     emit('deleted');
+};
+
+const target = coin => {
+    let i = 0;
+
+    for(let j = 0; j < coin.tickers.length; j++){
+        if(coin.tickers[i].target != 'USDT'){
+            i = j;
+        }
+    }
+
+    return i;
 };
 </script>

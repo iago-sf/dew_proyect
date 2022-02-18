@@ -17,7 +17,7 @@
             <div class="lg:w-[20%] w-[30%] text-left pl-2">Name</div>
             <div class="lg:w-[12.5%] w-[15%] text-center">Price</div>
             <div class="lg:w-[12.5%] w-[15%] text-center">24h change</div>
-            <div v-if="width >= 1024" class="w-[12.5%] text-center">Volume Traded</div>
+            <div v-if="width >= 1024" class="w-[12.5%] text-center">Market Cap</div>
             <div v-if="width >= 1024" class="w-[12.5%] text-center">Supply</div>
             <div v-if="session.getLog()" class="lg:w-[15%] w-[17.5%] text-center"></div>
         </div>
