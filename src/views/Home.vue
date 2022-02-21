@@ -31,7 +31,7 @@
 
         <Footer />
 
-        <AddToPortfolio  v-if="session.getLog()" @toggle="toggle('AddToPortfolio')" :cryptoId="cryptoId" :cryptoName="cryptoName"/>
+        <AddToPortfolio  v-if="session.getLog()" @toggle="toggle('AddToPortfolio')" :cryptoId="cryptoId" :cryptoName="cryptoName" :cryptoPrice="cryptoPrice"/>
     </div>
 </template>
 
@@ -56,6 +56,7 @@ const session = storeLog();
 const search = ref("");
 const cryptoId = ref("");
 const cryptoName = ref("");
+const cryptoPrice = ref("");
 const loading = ref(false);
 
 /*
@@ -69,6 +70,7 @@ window.addEventListener('resize', () => {
 const handleAddToPortfolio = e => {
     cryptoId.value = e.cryptoId;
     cryptoName.value = e.cryptoName;
+    cryptoPrice.value = e.cryptoPrice;
     toggle('AddToPortfolio');
 };
 
